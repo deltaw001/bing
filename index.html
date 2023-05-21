@@ -305,7 +305,7 @@
                                         hiddenText: message.text !== message.adaptiveCards[0].body[0].text ? message.text : null,
                                     })
                                 } else if (message.contentOrigin === 'Apology') {
-                                    alert('消息被删除')
+                                    alert('Message revoke detected')
                                     updateMessage({revoked: true})
                                     finished()
                                 } else {
@@ -322,7 +322,7 @@
                         if (response.item.messages[response.item.messages.length - 1].text)
                             finished()
                         else
-                            reject("看起来用户的消息触发了Bing的安全机制")
+                            reject("Looks like the user message has triggered the Bing filter")
                     } else if (response.type === "error") {
                         reject(response.error)
                     }
@@ -381,14 +381,14 @@
         return (
             <div className="container">
                 <div className="chat-history">
-                    <h3 className="heading">聊天记录:</h3>
+                    <h3 className="heading">Chat History:</h3>
                     <div className="button-container">
                         <button
                             className="button"
                             disabled={responding}
                             onClick={() => setPreviousMessages(defaultMessages)}
                         >
-                            清除
+                            Clear
                         </button>
                         <input accept="application/json" ref={fileInput} type="file" style={{display: "none"}}
                                onChange={handleFileChange}/>
@@ -397,12 +397,12 @@
                             disabled={responding}
                             onClick={() => fileInput.current.click()}
                         >
-                            加载
+                            Load
                         </button>
                         <button className="button"
                                 onClick={() => download("chat_history.json", JSON.stringify(previousMessages, null, 2))}
                         >
-                            保存
+                            Save
                         </button>
                     </div>
                     <div className="messages" id="messages">
@@ -471,7 +471,7 @@
                     </div>
                 </div>
                 <div className="user-input">
-                    <h3 className="heading">用户输入:</h3>
+                    <h3 className="heading">User Input:</h3>
                     <div id="suggestedResponsesContainer">
                         {(previousMessages[previousMessages.length - 1].revoked ?
                             ["Continue from your last sentence", "从你的上一句话继续", "あなたの最後の文から続けてください"] :
@@ -488,7 +488,7 @@
                         onKeyDown={handleUserInputKeyDown}
                     />
                     <button id="sendBtn" className="button" onClick={sendMessage} disabled={responding}>
-                        发送
+                        Send
                     </button>
                     <select
                         id="send-mode-selector"
